@@ -24,6 +24,8 @@
   border-radius: 4px;
   padding: 0;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .todo-input {
@@ -76,3 +78,19 @@ ul.todo-list {
   background: #fafafa;
 }
 
+.deleteAll-btn{
+  background-color: #cc9a9a;
+  font-family: 'Helvetica Neue', sans-serif;
+  padding: 7px;
+  margin: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid black;
+  align-self: center;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2),
+              0 25px 50px rgba(0, 0, 0, 0.1);
+}
+
+.deleteAll-btn:hover{
+  background-color: #bb5155;
+}

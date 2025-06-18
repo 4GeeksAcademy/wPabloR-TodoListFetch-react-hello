@@ -7,19 +7,6 @@ const Fetch = () => {
     const [input, setInput] = useState("");
     const [tasks, setTasks] = useState([]);
 
-    //     useEffect(()=> {
-    //         fetch("https://playground.4geeks.com/todo/users/wPabloR",{
-    //             method: "POST",
-    //             body: JSON.stringify({todos: []}),
-    //             headers: {
-    //                 "Content-Type":"application/json"
-    //             }
-    //     })
-    //         .then(resp => resp.json())
-    //         .then(data => data)
-    //         .catch(error => console.error(error));
-    // },[]);
-
     useEffect(() => {
         fetch("https://playground.4geeks.com/todo/users/wPabloR")
             .then(resp => resp.json())
@@ -74,17 +61,39 @@ const Fetch = () => {
         fetch(`https://playground.4geeks.com/todo/todos/${idToDelete}`, {
             method: "DELETE",
         })
-        .then(resp => {
-            if (!resp.ok) throw new Error("Error al actualizar las tareas");
-            setTasks(prevTask => prevTask.filter(task => task.id !== idToDelete))
-        })
-        .catch(error => {
-            console.error("Error al eliminar tarea", error);
-            alert("Hubo un problema al eliminar la tarea");
-        })
-        
+            .then(resp => {
+                if (!resp.ok) throw new Error("Error al actualizar las tareas");
+                setTasks(prevTask => prevTask.filter(task => task.id !== idToDelete))
+            })
+            .catch(error => {
+                console.error("Error al eliminar tarea", error);
+                alert("Hubo un problema al eliminar la tarea");
+            })
     }
 
+    const deleteAll = () => {
+        fetch('https://playground.4geeks.com/todo/users/wPabloR', {
+            method: "DELETE"
+        })
+          .then(resp => {
+            if (!resp.ok && resp.status !== 404) {
+                throw new Error("Error al eliminar el usuario");
+            }
+
+            return fetch('https://playground.4geeks.com/todo/users/wPabloR', {
+                method: "POST",
+                body: JSON.stringify({ todos: [] }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+        })
+        .then(resp => resp.json())
+        .then(() => {
+            setTasks([])
+        })
+        .catch(error => console.error("Error al eliminar las tareas",error))
+    }
 
 
     return (
@@ -113,6 +122,7 @@ const Fetch = () => {
                 <div className="footer">
                     {tasks.length} item{tasks.length !== 1 && 's'} left
                 </div>
+                <button className="deleteAll-btn" onClick={deleteAll}>Delete All</button>
             </div>
         </div>
     );
