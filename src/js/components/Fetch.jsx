@@ -18,7 +18,7 @@ const Fetch = () => {
                             "Content-Type": "application/json"
                         }
                     });
-                }
+                }  
                 return Promise.resolve();
             })
             .then(() => {
@@ -30,17 +30,6 @@ const Fetch = () => {
             })
             .catch(error => console.error("Error al crear usuario:", error));
     }, []);
-
-
-    useEffect(() => {
-        fetch("https://playground.4geeks.com/todo/users/wPabloR")
-            .then(resp => resp.json())
-            .then(data => {
-                const tareas = data.todos;
-                setTasks(tareas)
-            })
-            .catch(error => console.error("error al obtener tareas", error))
-    }, [])
 
     const addInput = (e) => {
         setInput(e.target.value)
