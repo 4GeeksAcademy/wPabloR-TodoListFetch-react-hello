@@ -9,6 +9,31 @@ const Fetch = () => {
 
     useEffect(() => {
         fetch("https://playground.4geeks.com/todo/users/wPabloR")
+            .then(resp => {
+                if (resp.status == 404) {
+                    return fetch("https://playground.4geeks.com/todo/users/wPabloR", {
+                        method: "POST",
+                        body: JSON.stringify({ todos: [] }),
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    });
+                }
+                return Promise.resolve();
+            })
+            .then(() => {
+                return fetch("https://playground.4geeks.com/todo/users/wPabloR")
+            })
+            .then(resp => resp.json())
+            .then( data => {
+                setTasks(data.todos || []);
+            })
+            .catch(error => console.error("Error al crear usuario:", error));
+    }, []);
+
+
+    useEffect(() => {
+        fetch("https://playground.4geeks.com/todo/users/wPabloR")
             .then(resp => resp.json())
             .then(data => {
                 const tareas = data.todos;
@@ -75,24 +100,24 @@ const Fetch = () => {
         fetch('https://playground.4geeks.com/todo/users/wPabloR', {
             method: "DELETE"
         })
-          .then(resp => {
-            if (!resp.ok && resp.status !== 404) {
-                throw new Error("Error al eliminar el usuario");
-            }
-
-            return fetch('https://playground.4geeks.com/todo/users/wPabloR', {
-                method: "POST",
-                body: JSON.stringify({ todos: [] }),
-                headers: {
-                    "Content-Type": "application/json"
+            .then(resp => {
+                if (!resp.ok && resp.status !== 404) {
+                    throw new Error("Error al eliminar el usuario");
                 }
-            });
-        })
-        .then(resp => resp.json())
-        .then(() => {
-            setTasks([])
-        })
-        .catch(error => console.error("Error al eliminar las tareas",error))
+
+                return fetch('https://playground.4geeks.com/todo/users/wPabloR', {
+                    method: "POST",
+                    body: JSON.stringify({ todos: [] }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+            })
+            .then(resp => resp.json())
+            .then(() => {
+                setTasks([])
+            })
+            .catch(error => console.error("Error al eliminar las tareas", error))
     }
 
 
